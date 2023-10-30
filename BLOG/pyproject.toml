@@ -1,0 +1,22 @@
+[tool.poetry]
+name = "BLOG"
+version = "0.1.0"
+description = ""
+authors = ["himanshu6-chauhan <himanshu.chauhan@srijan.net>"]
+
+[tool.poetry.dependencies]
+python = "^3.9"
+alembic = "^1.8.1"
+uvicorn = {extras = ["standard"], version = "^0.23.2"}
+passlib = "^1.7.4"
+bcrypt = "^4.0.1"
+python-jose = "^3.3.0"
+python-multipart = "^0.0.5"
+fastapi = "^0.104.0"
+
+[tool.poetry.dev-dependencies]
+pytest = "^5.2"
+
+[build-system]
+requires = ["poetry-core>=1.0.0"]
+build-backend = "poetry.core.masonry.api"

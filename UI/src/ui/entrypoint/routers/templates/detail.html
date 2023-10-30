@@ -1,0 +1,31 @@
+{% extends 'base.html' %}
+
+{% block title %}
+	<title>Blog Detail</title>
+{% endblock %}
+
+{% block content %}
+	<div class="container">
+		<h1> WELCOME TO BLOG</h1>
+		<table class="table">
+		  <tbody>
+   			 <tr>
+     			 <th scope="row">Title</th>
+     			 <td>{{blog.title}}</td>
+    		</tr>
+    		<tr>
+      			<th scope="row">Description</th>
+      			<td>{{blog.description}}</td>
+    		</tr>
+    		<tr>
+      			<th scope="row">Email</th>
+      			<td colspan="2">{{owner.email}}</td>
+    		</tr>
+			<tr>
+				<th scope="row">Owner</th>
+				<td colspan="2">{{owner.name}}</td>
+			</tr>
+  		</tbody>
+	  </table>
+	</div>
+{% endblock %}

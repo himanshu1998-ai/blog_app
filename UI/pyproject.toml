@@ -1,0 +1,18 @@
+[tool.poetry]
+name = "ui"
+version = "0.1.0"
+description = ""
+authors = ["himanshu6-chauhan <himanshu.chauhan@srijan.net>"]
+readme = "README.md"
+packages = [{include = "ui", from = "src"}]
+
+[tool.poetry.dependencies]
+python = "^3.10"
+Jinja2 = "^3.1.2"
+fastapi = "^0.88.0"
+uvicorn = "^0.20.0"
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
