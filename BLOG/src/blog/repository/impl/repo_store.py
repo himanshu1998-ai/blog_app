@@ -1,7 +1,7 @@
 from typing import Union, List
 from sqlalchemy.orm import Session
 
-from fastapi import Depends, HTTPException, status
+from fastapi import Depends
 
 from blog.entrypoint.postgresql.database import get_db
 from blog.repository.interface.blog_repo import IBLOGREPO
@@ -9,6 +9,7 @@ from blog.entity.blog import BLOG
 
 from blog.entrypoint.postgresql.models import Blog, User
 from blog.model.schemas import BlogSchema
+from blog.exception import exception
 
 
 class REPOSTORE(IBLOGREPO):
@@ -20,51 +21,70 @@ class REPOSTORE(IBLOGREPO):
 
         return dict(blog_id=payload.blog_id, title=payload.title, description=payload.description, user_id=payload.user_id)
 
-    def create_blog(self, blog: BlogSchema) -> BLOG:
-        blog = Blog(**blog.dict())
-        self.session.add(blog)
-        self.session.commit()
-        return BLOG.from_json(self.prepare_payload(blog))
+    def create_blog(self, blog: BlogSchema) -> Union[BLOG, str]:
+        try:
+            blog = Blog(**blog.model_dump())
+            self.session.add(blog)
+            self.session.commit()
+            return BLOG.from_json(self.prepare_payload(blog))
 
-    def read_blog(self, blog_id: int) -> BLOG:
+        except Exception as e:
 
-        blog = self.session.query(Blog).get(blog_id)
-        if not blog:
-            raise HTTPException(status_code=status.HTTP_404_NOT_FOUND,
-                                detail=f"User with the id {blog_id} is not available")
+            return f"Exception: {e}-- occurred while creating blog with data: {blog}"
 
-        return BLOG.from_json(self.prepare_payload(blog))
+    def read_blog(self, blog_id: int) -> Union[BLOG, str]:
+        try:
 
-    def list_blog(self, user_id: int) -> List[BLOG]:
-        blogs = self.session.query(Blog).filter(Blog.user_id == user_id).all()
+            blog = self.session.query(Blog).get(blog_id)
+            if not blog:
+                return exception.not_found(detail=f"User with the id {blog_id} is not available")
 
-        if not blogs:
-            raise HTTPException(status_code=status.HTTP_404_NOT_FOUND,
-                                detail=f"User with the id {user_id} is not available")
+            return BLOG.from_json(self.prepare_payload(blog))
+        except Exception as e:
+            return f"Exception: {e}-- occurred while fetching blog with blog_id: {blog_id}"
 
-        return [BLOG.from_json(self.prepare_payload(blog)) for blog in blogs]
+    def list_blog(self, user_id: int) -> Union[List[BLOG], str]:
+        try:
+            blogs = self.session.query(Blog).filter(Blog.user_id == user_id).all()
 
-    def listall_blog(self) -> List[BLOG]:
-        blogs = self.session.query(Blog).all()
-        print('blogs', blogs)
+            if not blogs:
 
-        if not blogs:
-            raise HTTPException(status_code=status.HTTP_404_NOT_FOUND,
-                                detail=f"data is not available{blogs}")
+                return exception.not_found(detail=f"User with the id {user_id} is not available")
+            return [BLOG.from_json(self.prepare_payload(blog)) for blog in blogs]
 
-        return [BLOG.from_json(self.prepare_payload(blog)) for blog in blogs]
+        except Exception as e:
+            return f"Exception: {e}-- occurred while fetching list blog with user_id: {user_id}"
 
-    def update_blog(self, blog: BlogSchema) -> BLOG:
+    def listall_blog(self) -> Union[List[BLOG], str]:
+        try:
+            blogs = self.session.query(Blog).all()
+            print('blogs', blogs)
 
-        updated_blog = self.session.query(Blog).update({Blog.title: blog.title, Blog.description: blog.description})
-        self.session.commit()
-        return BLOG.from_json(self.prepare_payload(updated_blog))
+            if not blogs:
 
-    def delete_blog(self, blog_id: int) -> int:
-        blog = self.session.query(Blog).filter(Blog.blog_id == blog_id).delete()
-        if not blog:
-            raise HTTPException(status_code=status.HTTP_404_NOT_FOUND,
-                                detail=f"User with the id {blog_id} is not available")
-        return blog_id
+                return exception.not_found(detail=f"data is not available{blogs}")
+
+            return [BLOG.from_json(self.prepare_payload(blog)) for blog in blogs]
+        except Exception as e:
+            return f"Exception: {e}-- occurred while fetching list all blog"
+
+    def update_blog(self, blog: BlogSchema) -> Union[BLOG, str]:
+        try:
+            updated_blog = self.session.query(Blog).update({Blog.title: blog.title, Blog.description: blog.description})
+            self.session.commit()
+            return BLOG.from_json(self.prepare_payload(updated_blog))
+        except Exception as e:
+            return f"Exception: {e}-- occurred while updating blog with data: {blog}"
+
+    def delete_blog(self, blog_id: int) -> Union[int, str]:
+        try:
+            blog = self.session.query(Blog).filter(Blog.blog_id == blog_id).delete()
+            if not blog:
+
+                return exception.not_found(detail=f"User with the id {blog_id} is not available")
+
+            return blog_id
+        except Exception as e:
+            return f"Exception: {e}-- occurred while deleting blog with blog_id: {blog_id}"
 
 
