@@ -30,7 +30,7 @@ async def login_user(formdata: OAuth2PasswordRequestForm = Depends()):
     return data
 
 
-@router.get(config.GET_USER, response_model=ShowUser, tags=['users'])
+@router.get(config.GET_USER, tags=['users'])
 def get_user(user_id: int):
     repo = USERSTORE(next(get_db()))
     usecase = GETUSERUSECASE(repo)
