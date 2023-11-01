@@ -3,7 +3,6 @@ Simple blog app backend using fastapi.
 Implementing Clean Architecture.
 Using sqlite as DB but YOu can use any sql database. 
 
-check Sqlalchemy website if any issues.
 ---- Prerequisite----
 1-Using Poetry to manage dependencies version-1.6.1 All the dependencies are in pyproject.toml file inside BLOG directory.
 2-Using miniconda to manage virtual enviornments.
