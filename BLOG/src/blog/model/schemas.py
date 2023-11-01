@@ -8,7 +8,7 @@ class BlogSchema(BaseModel):
     title: str
     description: str
 
-    class Config():
+    class ConfigDict():
         orm_mode = True
 
 
@@ -17,7 +17,7 @@ class UserSchema(BaseModel):
     email: str
     password: str
 
-    class Config():
+    class ConfigDict():
         orm_mode = True
 
 
@@ -25,7 +25,7 @@ class ShowUser(BaseModel):
     name: str
     email: str
 
-    class Config():
+    class ConfigDict():
         orm_mode = True
 
 
@@ -33,7 +33,7 @@ class Login(BaseModel):
     username: str
     password: str
 
-    class Config():
+    class ConfigDict():
         orm_mode = True
 
 

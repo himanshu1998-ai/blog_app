@@ -1,6 +1,7 @@
 # Distribution / packaging
 .Python
 .idea
+.db
 env/
 build/
 develop-eggs/

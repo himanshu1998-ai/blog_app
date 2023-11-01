@@ -13,6 +13,7 @@ bcrypt = "^4.0.1"
 python-jose = "^3.3.0"
 python-multipart = "^0.0.5"
 fastapi = "^0.104.0"
+pytest-mock = "^3.12.0"
 
 [tool.poetry.dev-dependencies]
 pytest = "^5.2"
