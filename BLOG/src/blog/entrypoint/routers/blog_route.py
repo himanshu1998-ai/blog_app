@@ -61,9 +61,9 @@ def delete_blog(blog_id: int, current_user: UserSchema = Depends(oAuth.get_curre
 
 
 @router.put(config.UPDATE_BLOG, tags=['blogs'])
-def update_blog(blog_id: int, current_user: UserSchema = Depends(oAuth.get_current_user)):
+def update_blog(blog_id: int, data_to_update: BlogSchema, current_user: UserSchema = Depends(oAuth.get_current_user)):
     user = current_user
     repo = REPOSTORE(next(get_db()))
     usecase = UPDATEBLOGUSECASE(repo)
-    data = usecase.execute(blog_id=blog_id)
+    data = usecase.execute(blog_id=blog_id, data_to_update=data_to_update)
     return data

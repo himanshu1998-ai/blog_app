@@ -23,7 +23,7 @@ class IBLOGREPO(ABC):
         pass
 
     @abstractmethod
-    def update_blog(self, blog: BLOG) -> BLOG:
+    def update_blog(self, blog: BlogSchema, blog_id: int) -> BLOG:
         pass
 
     @abstractmethod
