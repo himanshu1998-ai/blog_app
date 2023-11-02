@@ -37,7 +37,7 @@ class REPOSTORE(IBLOGREPO):
 
             blog = self.session.query(Blog).get(blog_id)
             if not blog:
-                return exception.not_found(detail=f"User with the id {blog_id} is not available")
+                return exception.not_found(detail=f"Blog with the id {blog_id} is not available")
 
             return BLOG.from_json(self.prepare_payload(blog))
         except Exception as e:
@@ -58,21 +58,18 @@ class REPOSTORE(IBLOGREPO):
     def listall_blog(self) -> Union[List[BLOG], str]:
         try:
             blogs = self.session.query(Blog).all()
-            print('blogs', blogs)
-
             if not blogs:
-
                 return exception.not_found(detail=f"data is not available{blogs}")
 
             return [BLOG.from_json(self.prepare_payload(blog)) for blog in blogs]
         except Exception as e:
             return f"Exception: {e}-- occurred while fetching list all blog"
 
-    def update_blog(self, blog: BlogSchema) -> Union[BLOG, str]:
+    def update_blog(self, blog: BlogSchema, blog_id: int) -> str:
         try:
-            updated_blog = self.session.query(Blog).update({Blog.title: blog.title, Blog.description: blog.description})
+            self.session.query(Blog).filter(Blog.user_id == blog.user_id, Blog.blog_id == blog_id).update({Blog.title: blog.title, Blog.description: blog.description})
             self.session.commit()
-            return BLOG.from_json(self.prepare_payload(updated_blog))
+            return f"Blog updated successfully with data=({blog})"
         except Exception as e:
             return f"Exception: {e}-- occurred while updating blog with data: {blog}"
 
