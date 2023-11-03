@@ -1,15 +1,12 @@
 from fastapi import HTTPException
 from pytest_mock import MockerFixture
 from unittest.mock import Mock
-from blog.entity.user import USER
 from blog.exception.exception import not_found
-from blog.hashing.hash import bcrypt
 from blog.usecases.delete.delete_user import DELETEUSERUSECASE
 from blog.repository.interface.user_repo import IUSERREPO
-from blog.model.schemas import UserSchema
 
 
-class TestCreateUSERUseCase:
+class TestDeleteUSERUseCase:
 
     def test_orchestrate(self, mocker: MockerFixture):
         self._mocker = mocker

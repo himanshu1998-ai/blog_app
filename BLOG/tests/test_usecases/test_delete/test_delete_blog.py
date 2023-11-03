@@ -6,7 +6,7 @@ from blog.exception.exception import not_found
 from fastapi import HTTPException
 
 
-class TestReadBLOGUseCase:
+class TestDeleteBLOGUseCase:
 
     def test_orchestrate(self, mocker: MockerFixture):
         self._mocker = mocker
