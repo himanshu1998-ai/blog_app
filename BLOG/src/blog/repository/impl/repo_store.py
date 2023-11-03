@@ -78,7 +78,7 @@ class REPOSTORE(IBLOGREPO):
             blog = self.session.query(Blog).filter(Blog.blog_id == blog_id).delete()
             if not blog:
 
-                return exception.not_found(detail=f"User with the id {blog_id} is not available")
+                return exception.not_found(detail=f"Blog with the id {blog_id} is not available")
 
             return blog_id
         except Exception as e:
